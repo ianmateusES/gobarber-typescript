@@ -2,9 +2,9 @@
   "type": "postgres",
   "host": "localhost",
   "port": 5432,
-  "username": "postgres",
+  "username": "gobarber",
   "password": "docker",
-  "database": "gostack_gobarber",
+  "database": "gobarber",
   "entities": [
     "./src/models/*.ts"
   ],

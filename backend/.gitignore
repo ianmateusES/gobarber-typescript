@@ -1,4 +1,11 @@
-node_modules
+node_modules/
+
+.idea/
+.vscode/
+build/
+temp/
+tmp/*
+!tmp/.gitkeep
 
 *.log
 *.lock
