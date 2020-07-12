@@ -5,9 +5,14 @@ import GlobalStyle from './styles/global';
 import SingIn from './pages/SingIn';
 import SingUp from './pages/SingUp';
 
+import AppProvider from './hooks';
+
 const App: React.FC = () => (
   <>
-    <SingIn />
+    <AppProvider>
+      <SingIn />
+    </AppProvider>
+
     <GlobalStyle />
   </>
 );
