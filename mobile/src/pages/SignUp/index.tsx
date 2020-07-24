@@ -130,7 +130,7 @@ const SignUp: React.FC = () => {
               />
             </Form>
             <Button onPress={() => formRef.current?.submitForm()}>
-              Entrar
+              Cadastrar
             </Button>
           </Container>
         </ScrollView>
