@@ -5,7 +5,7 @@ on: pull_request
 jobs:
   code:
     name: Lint code
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
