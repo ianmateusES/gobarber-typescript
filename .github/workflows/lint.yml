@@ -6,6 +6,10 @@ jobs:
   code:
     name: Lint code
     runs-on: ubuntu-18.04
+    
+    script:
+      - 'cd backend'
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
