@@ -10,10 +10,9 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    script:
-      - 'cd backend'
-
     steps:
+      - name: Backend Aplication
+        run: cd backend
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
