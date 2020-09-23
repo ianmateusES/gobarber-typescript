@@ -12,7 +12,8 @@ jobs:
 
     steps:
       - name: Backend Aplication
-        run: cd backend
+        working-directory: ./backend/
+        
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
