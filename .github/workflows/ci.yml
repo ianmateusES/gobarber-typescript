@@ -1,0 +1,43 @@
+name: ci
+
+on: 
+  pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install dependencies
+        uses: yarn
+        working-directory: backend
+
+      - name: Check tests
+        run: yarn test --coverage
+        working-directory: backend
+
+      - name: Check linting
+        run: yarn lint
+        working-directory: backend
+
+      - name: Check commit message
+        uses: wagoid/commitlint-github-action@v1
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: backend
