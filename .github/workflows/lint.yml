@@ -21,9 +21,9 @@ jobs:
         working-directory: backend
 
       - name: Install dependencies
+        working-directory: backend  
         uses: bahmutov/npm-install@v1
-        working-directory: backend
-
+        
       - name: Run ESLint
         run: yarn lint
         working-directory: backend
