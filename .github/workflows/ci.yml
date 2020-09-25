@@ -3,6 +3,10 @@ name: ci
 on: 
   pull_request
 
+defaults:
+  run:
+    working-directory: ./backend
+
 jobs:
   build:
     runs-on: ubuntu-18.04
@@ -23,15 +27,12 @@ jobs:
 
       - name: Install dependencies
         uses: yarn
-        working-directory: backend
 
       - name: Check tests
         run: yarn test --coverage
-        working-directory: backend
 
       - name: Check linting
         run: yarn lint
-        working-directory: backend
 
       - name: Check commit message
         uses: wagoid/commitlint-github-action@v1
@@ -40,4 +41,3 @@ jobs:
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-        working-directory: backend
