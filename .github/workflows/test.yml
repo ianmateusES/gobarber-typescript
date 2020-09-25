@@ -11,26 +11,27 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      - name: Backend Aplication
-        working-directory: ./backend/
-        
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+        working-directory: backend
 
       - name: Set up Node
         uses: actions/setup-node@v1
         with:
           node-version: 12
+        working-directory: backend
 
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
 
       - name: Run Jest
         run: yarn test --coverage
+        working-directory: backend
 
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: backend
