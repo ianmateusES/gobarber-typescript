@@ -26,7 +26,7 @@ jobs:
           node-version: 12
 
       - name: Install dependencies
-        uses: yarn
+        run: yarn
 
       - name: Check tests
         run: yarn test --coverage
