@@ -14,7 +14,8 @@ export default class SessionsController {
       password,
     });
 
-    delete user.password;
+    // delete user.password;
+    Object.assign(user, { password: undefined });
 
     return res.json({ user, token });
   }
