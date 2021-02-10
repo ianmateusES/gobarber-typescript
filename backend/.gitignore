@@ -25,3 +25,11 @@ tmp/*
 
 # aa
 *.lock
+
+#
+.env
+
+#
+ormconfig.json
+
+.vscode/

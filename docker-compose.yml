@@ -1,0 +1,22 @@
+version: '1'
+
+services:
+  postgres:
+    image: 'postgres:13-alpine'
+    container_name: postgresdb-gobarber
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER: "gobarber"
+      - POSTGRES_PASSWORD: "docker"
+      - POSTGRES_DB: "gobarber"
+    volumes:
+      - $HOME/dataset/gobarber/postgres:/var/lib/postgresql/data
+
+  mongo:
+    image: 'mongo'
+    container_name: mongodb-gobarber
+    ports:
+      - '27017:27017'
+    volumes:
+      -  $HOME/dataset/gobarber/mongo:/data/db
