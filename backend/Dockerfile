@@ -14,4 +14,4 @@ COPY --chown=node:node . .
 
 EXPOSE 3333
 
-CMD ["yarn", "dev"]
+CMD ["yarn", "start"]
