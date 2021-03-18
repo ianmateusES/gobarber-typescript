@@ -25,6 +25,7 @@ tmp/*
 
 # aa
 *.lock
+*.log
 
 #
 .env

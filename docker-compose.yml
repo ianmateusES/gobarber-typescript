@@ -1,4 +1,4 @@
-version: '1'
+version: '3'
 
 services:
   postgres:
@@ -7,16 +7,24 @@ services:
     ports:
       - '5432:5432'
     environment:
-      - POSTGRES_USER: "gobarber"
-      - POSTGRES_PASSWORD: "docker"
-      - POSTGRES_DB: "gobarber"
+      POSTGRES_USER: "gobarber"
+      POSTGRES_PASSWORD: "docker"
+      POSTGRES_DB: "gobarberdb"
     volumes:
       - $HOME/dataset/gobarber/postgres:/var/lib/postgresql/data
 
   mongo:
     image: 'mongo'
-    container_name: mongodb-gobarber
+    container_name: mongo-gobarber
     ports:
       - '27017:27017'
     volumes:
       -  $HOME/dataset/gobarber/mongo:/data/db
+
+  regis:
+    image: 'redis:alpine'
+    container_name: redis-gobarber
+    ports:
+      - '6379:6379'
+    volumes:
+      -  $HOME/dataset/gobarber/redis:/usr/local/etc/redi
