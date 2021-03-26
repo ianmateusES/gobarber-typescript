@@ -42,6 +42,7 @@
       "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
       "import/prefer-default-export": "off",
       "camelcase": "off",
+      "import/no-duplicates": "off",
       "@typescript-eslint/explicit-function-return-type": [
         "error",
         {
