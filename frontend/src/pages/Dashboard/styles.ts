@@ -129,6 +129,7 @@ export const NextAppointment = styled.div`
     strong {
       margin-left: 24px;
       color: #fff;
+      font-size: 20px;
     }
 
     span {
@@ -156,6 +157,10 @@ export const Section = styled.section`
     display: block;
     padding-bottom: 16px;
     margin-bottom: 16px;
+  }
+
+  > p {
+    color: #999591;
   }
 `;
 

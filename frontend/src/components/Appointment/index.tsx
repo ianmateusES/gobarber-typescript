@@ -1,5 +1,6 @@
 import React from 'react';
 import { FiClock } from 'react-icons/fi';
+import imageUser from '../../assets/user.svg';
 
 import { Container } from './styles';
 
@@ -18,7 +19,7 @@ const Appointment: React.FC<AppointmentProps> = ({ name, hors, image }) => {
       </span>
 
       <div>
-        <img src={image} alt={name} />
+        <img src={image || imageUser} alt={name} />
         <strong>{name}</strong>
       </div>
     </Container>
