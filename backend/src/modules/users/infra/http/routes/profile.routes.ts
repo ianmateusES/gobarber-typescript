@@ -18,7 +18,7 @@ profileRouter.put(
     [Segments.BODY]: {
       name: Joi.string().required(),
       email: Joi.string().email().required(),
-      old_password: Joi.string(),
+      old_password: Joi.string().allow(''),
       password: Joi.when('old_password', {
         is: Joi.exist(),
         then: Joi.required(),
