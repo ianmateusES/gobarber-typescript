@@ -8,6 +8,10 @@ import profileRouter from '@modules/users/infra/http/routes/profile.routes';
 
 const routes = Router();
 
+routes.get('/', (req, res) => {
+  return res.json({ mensage: 'Air application' });
+});
+
 routes.use('/appointments', appointmentsRouter);
 routes.use('/providers', providersRouter);
 routes.use('/users', usersRouter);
