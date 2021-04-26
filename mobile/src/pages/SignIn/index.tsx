@@ -1,25 +1,28 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import {
-  Image,
   View,
-  KeyboardAvoidingView,
+  Image,
   ScrollView,
+  KeyboardAvoidingView,
   Platform,
+  Keyboard,
   TextInput,
   Alert,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import * as Yup from 'yup';
+
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
-import * as Yup from 'yup';
-import Icon from 'react-native-vector-icons/Feather';
+
+import { useNavigation } from '@react-navigation/native';
+import FeatherIcon from 'react-native-vector-icons/Feather';
+
+import Input from '../../components/Input';
+import Button from '../../components/Button';
 
 import logoImg from '../../assets/logo.png';
 
 import { useAuth } from '../../hooks/auth';
-import getValidationErrors from '../../utils/getValidationErrors';
-import Input from '../../components/Input';
-import Button from '../../components/Button';
 
 import {
   Container,
@@ -29,6 +32,7 @@ import {
   CreateAccountButton,
   CreateAccountButtonText,
 } from './styles';
+import getValidationErrors from '../../utils/getValidationErrors';
 
 interface SignInFormData {
   email: string;
@@ -36,50 +40,70 @@ interface SignInFormData {
 }
 
 const SignIn: React.FC = () => {
+  const navigation = useNavigation();
   const formRef = useRef<FormHandles>(null);
   const passwordInputRef = useRef<TextInput>(null);
 
   const { signIn } = useAuth();
 
-  const navigation = useNavigation();
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
-  const handleSignIn = useCallback(
-    async (data: SignInFormData) => {
-      try {
-        formRef.current?.setErrors({});
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true); // or some other action
+      },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false); // or some other action
+      },
+    );
 
-        const schema = Yup.object().shape({
-          email: Yup.string()
-            .required('E-mail obrigatório')
-            .email('Digite um e-mail valido'),
-          password: Yup.string().required('Senha obrigatório'),
-        });
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
 
-        await schema.validate(data, {
-          abortEarly: false,
-        });
+  const handleSignIn = useCallback(async (data: SignInFormData) => {
+    try {
+      formRef.current?.setErrors({});
 
-        await signIn({
-          email: data.email,
-          password: data.password,
-        });
-      } catch (error) {
-        if (error instanceof Yup.ValidationError) {
-          const errors = getValidationErrors(error);
+      const schema = Yup.object().shape({
+        email: Yup.string()
+          .required('E-mail obrigatório')
+          .email('Digite um e-mail valido'),
+        password: Yup.string().required('Senha obrigatório'),
+      });
 
-          formRef.current?.setErrors(errors);
+      await schema.validate(data, {
+        abortEarly: false,
+      });
 
-          return;
-        }
+      // console.log(data);
 
-        Alert.alert(
-          'Error na autenticação',
-          'Ocorreu um erro ao fazer login, cheque as credenciais.',
-        );
+      await signIn({
+        email: data.email,
+        password: data.password,
+      });
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        const errors = getValidationErrors(error);
+
+        formRef.current?.setErrors(errors);
+
+        return;
       }
-    },
-    [signIn],
-  );
+
+      Alert.alert(
+        'Error na autenticação',
+        'Ocorreu um erro ao fazer login, cheque as credenciais.',
+      );
+    }
+  }, []);
 
   return (
     <>
@@ -125,6 +149,7 @@ const SignIn: React.FC = () => {
                 }}
               />
             </Form>
+
             <Button
               onPress={() => {
                 formRef.current?.submitForm();
@@ -132,9 +157,10 @@ const SignIn: React.FC = () => {
             >
               Entrar
             </Button>
+
             <ForgotPassword
               onPress={() => {
-                console.log('Legal');
+                console.log('Esquici Senha');
               }}
             >
               <ForgotPasswordText>Esqueci minha senha</ForgotPasswordText>
@@ -143,10 +169,13 @@ const SignIn: React.FC = () => {
         </ScrollView>
       </KeyboardAvoidingView>
 
-      <CreateAccountButton onPress={() => navigation.navigate('SignUp')}>
-        <Icon name="log-in" size={20} color="#ff9000" />
-        <CreateAccountButtonText>Crair uma conta</CreateAccountButtonText>
-      </CreateAccountButton>
+      {!isKeyboardVisible && (
+        <CreateAccountButton onPress={() => navigation.navigate('SignUp')}>
+          <FeatherIcon name="log-in" size={20} color="#ff9000" />
+
+          <CreateAccountButtonText>Criar uma conta</CreateAccountButtonText>
+        </CreateAccountButton>
+      )}
     </>
   );
 };

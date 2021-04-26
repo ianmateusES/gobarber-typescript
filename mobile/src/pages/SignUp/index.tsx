@@ -1,27 +1,30 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import {
-  Image,
   View,
-  KeyboardAvoidingView,
+  Image,
   ScrollView,
+  KeyboardAvoidingView,
   Platform,
+  Keyboard,
   TextInput,
   Alert,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import * as Yup from 'yup';
+
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
-import * as Yup from 'yup';
-import Icon from 'react-native-vector-icons/Feather';
+
+import { useNavigation } from '@react-navigation/native';
+import FeatherIcon from 'react-native-vector-icons/Feather';
+
+import Input from '../../components/Input';
+import Button from '../../components/Button';
 
 import logoImg from '../../assets/logo.png';
 
-import getValidationErrors from '../../utils/getValidationErrors';
-import Input from '../../components/Input';
-import Button from '../../components/Button';
-import api from '../../services/api';
-
 import { Container, Title, BackToSignIn, BackToSignInText } from './styles';
+import getValidationErrors from '../../utils/getValidationErrors';
+import api from '../../services/api';
 
 interface SignUpFormData {
   name: string;
@@ -30,11 +33,33 @@ interface SignUpFormData {
 }
 
 const SignUp: React.FC = () => {
-  const formRef = useRef<FormHandles>(null);
   const navigation = useNavigation();
-
+  const formRef = useRef<FormHandles>(null);
   const emailInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
+  const passwordConfirmInputRef = useRef<TextInput>(null);
+
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true); // or some other action
+      },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false); // or some other action
+      },
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
 
   const handleSignUp = useCallback(
     async (data: SignUpFormData) => {
@@ -47,11 +72,17 @@ const SignUp: React.FC = () => {
             .required('E-mail obrigatório')
             .email('Digite um e-mail valido'),
           password: Yup.string().min(6, 'No mínimo 6 dígitos'),
+          password_confirmation: Yup.string().oneOf(
+            [Yup.ref('password'), undefined],
+            'Senha não combina',
+          ),
         });
 
         await schema.validate(data, {
           abortEarly: false,
         });
+
+        // console.log(data);
 
         await api.post('/users', data);
 
@@ -91,7 +122,7 @@ const SignUp: React.FC = () => {
           contentContainerStyle={{ flex: 1 }}
         >
           <Container>
-            <Image source={logoImg} />
+            {!isKeyboardVisible && <Image source={logoImg} />}
 
             <View>
               <Title>Crie sua conta</Title>
@@ -99,6 +130,7 @@ const SignUp: React.FC = () => {
 
             <Form ref={formRef} onSubmit={handleSignUp}>
               <Input
+                autoCorrect={false}
                 autoCapitalize="words"
                 name="name"
                 icon="user"
@@ -107,39 +139,58 @@ const SignUp: React.FC = () => {
                 onSubmitEditing={() => emailInputRef.current?.focus()}
               />
               <Input
-                ref={emailInputRef}
-                keyboardType="email-address"
                 autoCorrect={false}
                 autoCapitalize="none"
                 autoCompleteType="off"
+                keyboardType="email-address"
                 name="email"
                 icon="mail"
                 placeholder="E-mail"
                 returnKeyType="next"
+                ref={emailInputRef}
                 onSubmitEditing={() => passwordInputRef.current?.focus()}
               />
               <Input
-                ref={passwordInputRef}
                 name="password"
                 icon="lock"
                 placeholder="Senha"
+                secureTextEntry
                 textContentType="newPassword"
+                returnKeyType="next"
+                ref={passwordInputRef}
+                onSubmitEditing={() => passwordConfirmInputRef.current?.focus()}
+              />
+              <Input
+                name="password_confirmation"
+                icon="lock"
+                placeholder="Confirmação da senha"
                 secureTextEntry
                 returnKeyType="send"
-                onSubmitEditing={() => formRef.current?.submitForm()}
+                textContentType="newPassword"
+                ref={passwordConfirmInputRef}
+                onSubmitEditing={() => {
+                  formRef.current?.submitForm();
+                }}
               />
             </Form>
-            <Button onPress={() => formRef.current?.submitForm()}>
+
+            <Button
+              onPress={() => {
+                formRef.current?.submitForm();
+              }}
+            >
               Cadastrar
             </Button>
           </Container>
         </ScrollView>
       </KeyboardAvoidingView>
 
-      <BackToSignIn onPress={() => navigation.goBack()}>
-        <Icon name="arrow-left" size={20} color="#fff" />
-        <BackToSignInText>Voltar para logon</BackToSignInText>
-      </BackToSignIn>
+      {!isKeyboardVisible && (
+        <BackToSignIn onPress={() => navigation.goBack()}>
+          <FeatherIcon name="arrow-left" size={20} color="#fff" />
+          <BackToSignInText>Voltar para logon</BackToSignInText>
+        </BackToSignIn>
+      )}
     </>
   );
 };
