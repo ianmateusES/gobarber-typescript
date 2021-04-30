@@ -34,3 +34,6 @@ tmp/*
 ormconfig.json
 
 .vscode/
+
+# Build
+dist/

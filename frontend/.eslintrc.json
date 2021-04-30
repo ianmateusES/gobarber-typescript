@@ -1,62 +1,57 @@
 {
     "env": {
         "browser": true,
-        "es6": true
+        "es2021": true
     },
     "extends": [
         "plugin:react/recommended",
         "airbnb",
-        "plugin:@typescript-eslint/recommended",
-        "prettier/@typescript-eslint",
+				"plugin:@typescript-eslint/recommended",
         "plugin:prettier/recommended"
     ],
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
-    },
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
         },
-        "ecmaVersion": 2018,
+        "ecmaVersion": 12,
         "sourceType": "module"
     },
     "plugins": [
         "react",
-        "@typescript-eslint",
         "react-hooks",
+        "@typescript-eslint",
         "prettier"
     ],
     "rules": {
       "prettier/prettier": "error",
       "react/jsx-one-expression-per-line": "off",
-      "react/jsx-no-target-blank": "off",
-      "react/prop-types": "off",
       "react/jsx-props-no-spreading": "off",
+      "react/prop-types": "off",
       "react-hooks/rules-of-hooks": "error",
-      "react-hooks/exhaustive-deps": "warn",
-      "no-unused-expressions": "off",
-      "@typescript-eslint/ban-types": "off",
-      "no-console": "off",
-      "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
-      "import/prefer-default-export": "off",
-      "camelcase": "off",
-      "import/no-duplicates": "off",
-      "@typescript-eslint/explicit-function-return-type": [
-        "error",
-        {
-          "allowExpressions": true
-        }
-      ],
-      "import/extensions": [
-        "error",
-        "ignorePackages",
-        {
-          "ts": "never",
-          "tsx": "never"
-        }
-      ]
+	    "react-hooks/exhaustive-deps": "warn",
+	    "react/jsx-filename-extension": [
+	      1,
+	      {
+	        "extensions": [
+	          ".tsx"
+	        ]
+	      }
+	    ],
+	    "import/extensions": [
+	      "error",
+	      "ignorePackages",
+	      {
+	        "ts": "never",
+	        "tsx": "never"
+	      }
+	    ],
+	    "no-use-before-define": "off",
+	    "@typescript-eslint/no-use-before-define": [
+	      "error"
+	    ],
+	    "react/react-in-jsx-scope": "off",
+      "camelcase": "off"
     },
     "settings": {
       "import/resolver": {
