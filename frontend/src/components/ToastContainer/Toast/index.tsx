@@ -12,7 +12,7 @@ import { Container } from './styles';
 
 interface ToastProps {
   message: ToastMessege;
-  style: object;
+  style: { marginTop: number };
 }
 
 const icons = {
