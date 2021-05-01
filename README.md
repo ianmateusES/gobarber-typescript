@@ -94,4 +94,4 @@ $ yarn && yarn android && yarn start
 
 Este projeto é desenvolvido sob a licença MIT. Veja o arquivo [LICENSE](LICENSE.md) para saber mais detalhes.
 
-<p align="center" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">Feito com :red_heart: by <strong> Ian Mateus</strong> </p>
+<p align="center" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">Feito com ❤ by <strong> Ian Mateus</strong> </p>
