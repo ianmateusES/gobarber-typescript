@@ -35,6 +35,7 @@ O projeto foi feito com as seguintes tecnologias:
 
 - [NodeJS](https://nodejs.org/en/)
 - [ReactJS](https://pt-br.reactjs.org/)
+- [React Native](https://reactnative.dev/)
 - [ExpressJS](https://expressjs.com/pt-br/)
 - [JWT](https://jwt.io/)
 - [Yup](https://github.com/jquense/yup)
